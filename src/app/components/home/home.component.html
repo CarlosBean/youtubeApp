@@ -1,0 +1,76 @@
+<div class="row">
+    <div class="col-12">
+        <h4>Lista de videos</h4>
+        <div
+            class="card-columns"
+            *ngIf="videos">
+            <div
+                class="card"
+                *ngFor="let video of videos">
+                <img
+                    class="card-img-top"
+                    [src]="video.thumbnails.high.url"
+                    alt>
+                <div class="card-body">
+                    <h5 class="card-title">{{ video.title }}</h5>
+                    <button
+                        (click)="openModal(video)"
+                        class="btn btn-outline-primary btn-block">
+                        Ver video
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button
+        (click)="loadMore()"
+        class="btn btn-outline-primary btn-block">
+        Cargar más videos
+    </button>
+</div>
+
+<!-- Modal -->
+<div
+    class="modal fade"
+    id="modelId"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="modelTitleId"
+    aria-hidden="true">
+    <div
+        class="modal-dialog"
+        role="document">
+        <div
+            class="modal-content"
+            *ngIf="selectedVideo">
+            <div class="modal-header">
+                <h5 class="modal-title">{{selectedVideo.title}}</h5>
+                <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <iframe
+                    width="100%"
+                    height="300"
+                    [src]="selectedVideo.resourceId.videoId | domSanitize"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+            <div class="modal-footer">
+                <button
+                    (click)="closeModal()"
+                    type="button"
+                    class="btn btn-primary"
+                    data-dismiss="modal">
+                    cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
