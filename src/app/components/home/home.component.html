@@ -1,25 +1,53 @@
+<h4>Descripción del canal</h4>
+<hr>
+<div
+    class="row mb-4"
+    *ngIf="channel">
+    <div class="col-3">
+        <img
+            class="img-thumbnail img-circle"
+            [src]="channel.thumbnails.high.url">
+    </div>
+    <div class="col-9">
+        <h4>{{channel.title}}</h4>
+        <p>{{channel.description}}</p>
+        <p>
+            <small class="text-muted">
+                Fecha de creación: {{channel.publishedAt | date:'yyyy/MM/dd HH:mm'}}
+            </small>
+        </p>
+    </div>
+</div>
+
+<h4>Videos subidos</h4>
+<hr>
 <div class="row">
-    <div class="col-12">
-        <h4>Lista de videos</h4>
+
+    <div
+        class="col-4"
+        *ngFor="let video of videos">
+        <div class="card mb-4 fadeIn animated">
+            <img
+                class="card-img-top"
+                [src]="video.thumbnails.high.url">
+            <div class="card-body">
+                <h5 class="card-title">{{ video.title }}</h5>
+                <p>
+                    <small class="text-muted">
+                        Fecha de publicación: {{video.publishedAt | date:'yyyy/MM/dd HH:mm'}}
+                    </small>
+                </p>
+                <button
+                    (click)="openModal(video)"
+                    class="btn btn-outline-primary btn-block">
+                    Ver video
+                </button>
+            </div>
+        </div>
         <div
             class="card-columns"
             *ngIf="videos">
-            <div
-                class="card"
-                *ngFor="let video of videos">
-                <img
-                    class="card-img-top"
-                    [src]="video.thumbnails.high.url"
-                    alt>
-                <div class="card-body">
-                    <h5 class="card-title">{{ video.title }}</h5>
-                    <button
-                        (click)="openModal(video)"
-                        class="btn btn-outline-primary btn-block">
-                        Ver video
-                    </button>
-                </div>
-            </div>
+
         </div>
     </div>
     <button
@@ -36,7 +64,9 @@
     tabindex="-1"
     role="dialog"
     aria-labelledby="modelTitleId"
-    aria-hidden="true">
+    aria-hidden="true"
+    data-backdrop="static"
+    data-keyboard="false">
     <div
         class="modal-dialog"
         role="document">
@@ -45,18 +75,22 @@
             *ngIf="selectedVideo">
             <div class="modal-header">
                 <h5 class="modal-title">{{selectedVideo.title}}</h5>
-                <button
-                    type="button"
-                    class="close"
-                    data-dismiss="modal"
-                    aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
             <div class="modal-body">
+                <!-- <div
+                    class="text-center py-5 text-secondary"
+                    *ngIf="loading">
+                    <i class="fas fa-spinner fa-4x fa-pulse"></i>
+                </div> -->
+                <img
+                    *ngIf="loading"
+                    style="width: 100%; height: 300px"
+                    [src]="selectedVideo.thumbnails.high.url">
                 <iframe
+                    [hidden]="loading"
                     width="100%"
                     height="300"
+                    (load)="loaded()"
                     [src]="selectedVideo.resourceId.videoId | domSanitize"
                     frameborder="0"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
@@ -68,7 +102,7 @@
                     type="button"
                     class="btn btn-primary"
                     data-dismiss="modal">
-                    cerrar
+                    Cerrar
                 </button>
             </div>
         </div>
