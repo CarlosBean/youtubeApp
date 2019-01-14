@@ -5,10 +5,10 @@
 export const environment = {
   production: false,
   api_url: 'https://www.googleapis.com/youtube/v3',
-  api_key: 'AIzaSyAuJKM_wPFSbyzbnJgzu1vZGr6-fH9pK34',
+  api_key: 'YOUTUBE_API_KEY',
   video_url: 'https://www.youtube.com/embed/',
-  uploads_id: 'UUhiNu7HTnMqt9kF2pD6UaJQ',
-  next_page_token: 'CAoQAA'
+  channel_id: 'UChiNu7HTnMqt9kF2pD6UaJQ',
+  uploads_id: 'UUhiNu7HTnMqt9kF2pD6UaJQ'
 };
 
 /*
