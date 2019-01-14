@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 })
 export class YoutubeService {
 
-  private nextPageToken: string;
+  private pageToken = '';
 
   constructor(private http: HttpClient) { }
 
@@ -20,25 +20,30 @@ export class YoutubeService {
       .set('part', 'snippet')
       .set('maxResults', '10')
       .set('playlistId', environment.uploads_id)
-      .set('key', environment.api_key);
-
-    if (this.nextPageToken) {
-      params.set('pageToken', this.nextPageToken);
-    }
+      .set('key', environment.api_key)
+      .set('pageToken', this.pageToken);
 
     return this.http.get(URL, { params });
   }
 
   getVideos(): Observable<any> {
-    /* return this.getURL('/playlistItems')
-      .pipe(map(res => res['items']
-        .map(item => item['snippet']))
-      ); */
 
     return this.getURL('/playlistItems')
       .pipe(map(res => {
-        this.nextPageToken = res['pageToken'];
+        console.log(res);
+        this.pageToken = res['nextPageToken'];
         return res['items'].map(item => item['snippet']);
       }));
+  }
+
+  getChannel(): Observable<any> {
+
+    const params = new HttpParams()
+      .set('part', 'snippet')
+      .set('id', environment.channel_id)
+      .set('key', environment.api_key);
+
+    return this.http.get(`${environment.api_url}/channels`, { params })
+      .pipe(map(res => res['items'][0]['snippet']));
   }
 }
