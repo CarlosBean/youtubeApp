@@ -11,7 +11,7 @@ export class DomSanitizePipe implements PipeTransform {
 
   transform(value: any): any {
     const url = environment.video_url;
-    return this.domSanitizer.bypassSecurityTrustResourceUrl(url + value);
+    return this.domSanitizer.bypassSecurityTrustResourceUrl(url + value + '?autoplay=1');
   }
 
 }
